@@ -3,45 +3,32 @@ package com.example.expense_tracker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.expense_tracker.ui.theme.Expense_trackerTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.expense_tracker.ui.theme.ExpenseApp
+import com.example.expense_tracker.ui.theme.ExpenseViewModel
+import com.example.expense_tracker.ui.theme.ExpenseViewModelFactory
+import com.example.expense_tracker.ui.theme.ExpenseTrackerTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            Expense_trackerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+            ExpenseTrackerTheme {
+                Surface(color = MaterialTheme.colorScheme.background) {
+
+                    val context = LocalContext.current
+
+                    val viewModel: ExpenseViewModel = viewModel<ExpenseViewModel>(
+                        factory = ExpenseViewModelFactory(context.applicationContext)
                     )
+
+                    // Root composable with navigation
+                    ExpenseApp(viewModel = viewModel)
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Expense_trackerTheme {
-        Greeting("Android")
     }
 }
